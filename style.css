@@ -1,0 +1,232 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* Body Styling with Animated Background */
+body {
+    background: linear-gradient(-45deg, #ff3333, #1a1a1a, #760000, #1a1a1a);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Gradient Animation */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Container for Services */
+.services-container {
+    text-align: center;
+    max-width: 800px;
+    padding: 30px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Title Styling */
+.services-container h1 {
+    color: #ff3333;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 5px #000;
+    animation: slideIn 1.5s ease forwards;
+    opacity: 0;
+}
+
+/* Slide In Animation for Title */
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Driver List Styling */
+.driver-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Driver Card Styling */
+.driver-card {
+    background: rgba(38, 38, 38, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    width: 260px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.driver-card:hover {
+    transform: translateY(-10px) scale(1.02) rotate(-1deg);
+    box-shadow: 0 6px 15px rgba(255, 51, 51, 0.6);
+    background-color: rgba(44, 44, 44, 0.95);
+}
+
+/* Glowing Effect */
+.driver-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+    transform: scale(0);
+    transition: transform 0.5s ease;
+    z-index: -1;
+}
+
+.driver-card:hover::after {
+    transform: scale(1);
+}
+
+.driver-card h3 {
+    color: #ff3333;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 4px #000;
+}
+
+.driver-card p {
+    color: #ccc;
+    margin-bottom: 15px;
+    font-size: 1em;
+    text-align: left;
+}
+
+/* Order Button Styling */
+.order-button {
+    background-color: #ff3333;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.order-button:hover {
+    background-color: #e62e2e;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 51, 51, 0.5);
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #262626;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    color: #fff;
+    position: relative;
+    animation: fadeIn 0.4s ease forwards;
+    opacity: 0;
+}
+
+/* Modal Header Styling */
+.modal-content h2 {
+    color: #ff3333;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+/* Modal Buttons */
+.modal-button {
+    background-color: #ff3333;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    margin: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.modal-button:hover {
+    background-color: #e62e2e;
+    transform: scale(1.1);
+}
+
+/* Modal Close Button */
+.modal-close {
+    background-color: #444;
+    color: #ccc;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: background-color 0.3s ease;
+}
+
+.modal-close:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+/* Show Modal Class */
+.modal.show {
+    display: flex;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Accessibility: Hidden Elements */
+.hidden {
+    display: none;
+}
