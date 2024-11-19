@@ -198,7 +198,7 @@
         <h1>List Driver Terbaik Kami</h1>
         <div class="driver-list">
             <div class="driver-card" id="driver-1">
-                <h3>Driver 1</h3>
+                <h3>Driver 1 (18thn)</h3>
                 <p>Alamat: Manyaran-Semarang Barat</p>
                 <p>Kendaraan: Honda Beat Merah</p>
                 <p>No HP: 628895885691</p>
@@ -213,8 +213,9 @@
     <div class="modal" id="service-selection-modal">
         <div class="modal-content">
             <h2>Pilih Layanan</h2>
-            <button class="modal-button" onclick="selectService('Antar Jemput')">Antar Jemput</button>
-            <button class="modal-button" onclick="selectService('Jasa Titip')">Jasa Titip</button>
+            <button class="modal-button" onclick="selectService('Antar Jemput')">Jasa Antar Jemput</button>
+            <button class="modal-button" onclick="selectService('Jasa Titip')">Jasa Titip Barang</button>
+            <button class="modal-button" onclick="selectService('Jasa Titip Makanan')">Jasa Titip Makanan</button>
             <button class="modal-button" onclick="closeServiceModal()">Batal</button>
         </div>
     </div>
@@ -323,9 +324,13 @@
                 document.getElementById("dropoff-location").placeholder = "Alamat Tujuan";
                 document.getElementById("additional-notes").placeholder = "Pesan untuk Driver";
             } else if (serviceType === 'Jasa Titip') {
-                document.getElementById("pickup-location").placeholder = "Lokasi Titipan";
-                document.getElementById("dropoff-location").placeholder = "Tujuan Titipan";
-                document.getElementById("additional-notes").placeholder = "Pesan untuk Driver (Opsional)";
+                document.getElementById("pickup-location").placeholder = "Lokasi Pengambilan";
+                document.getElementById("dropoff-location").placeholder = "Lokasi Pengiriman";
+                document.getElementById("additional-notes").placeholder = "Jenis Barang";
+            } else if (serviceType === 'Jasa Titip Makanan') {
+                document.getElementById("pickup-location").placeholder = "Nama Makanan/Restoran";
+                document.getElementById("dropoff-location").placeholder = "Alamat Pengantaran";
+                document.getElementById("additional-notes").placeholder = "Pesan khusus makanan (opsional)";
             }
 
             form.style.display = "flex";
