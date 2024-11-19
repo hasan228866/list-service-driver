@@ -241,7 +241,7 @@
             password: "228866"
         };
 
-        const driverAvailability = {
+        let driverAvailability = JSON.parse(localStorage.getItem("driverAvailability")) || {
             "1": true,
             "2": true,
             "3": true
@@ -261,6 +261,7 @@
 
         function closeLoginModal() {
             document.getElementById("login-modal").style.display = "none";
+            clearLoginFields();
         }
 
         function validateLogin(event) {
@@ -269,40 +270,50 @@
             const password = document.getElementById("password").value;
 
             if (username === adminCredentials.username && password === adminCredentials.password) {
+                document.getElementById("admin-tools").style.display = "block";
                 closeLoginModal();
-                showMode("admin");
             } else {
-                alert("Username atau Password salah!");
+                alert("Username atau password salah.");
             }
+        }
+
+        function clearLoginFields() {
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
         }
 
         function showMode(mode) {
-            const adminTools = document.getElementById("admin-tools");
             if (mode === "admin") {
-                adminTools.style.display = "block";
-                alert("Anda masuk ke Mode Admin");
-            } else {
-                adminTools.style.display = "none";
-                alert("Anda masuk ke Mode Driver");
+                attemptAdminLogin();
+            } else if (mode === "driver") {
+                document.getElementById("admin-tools").style.display = "none";
+                clearLoginFields();
             }
         }
-
+        
         function toggleDriverStatus() {
             const driverId = document.getElementById("driver-select").value;
             driverAvailability[driverId] = !driverAvailability[driverId];
+            localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
+            updateDriverStatus(driverId);
+        }
 
+        function updateDriverStatus(driverId) {
             const statusLabel = document.getElementById(`status-label-${driverId}`);
             const orderButton = document.getElementById(`order-${driverId}`);
+            const isAvailable = driverAvailability[driverId];
 
-            if (driverAvailability[driverId]) {
+            if (isAvailable) {
                 statusLabel.textContent = "Status: Tersedia";
                 orderButton.classList.remove("disabled");
-                orderButton.disabled = false;
             } else {
                 statusLabel.textContent = "Status: Tidak Tersedia";
                 orderButton.classList.add("disabled");
-                orderButton.disabled = true;
             }
+        }
+
+        for (const driverId in driverAvailability) {
+            updateDriverStatus(driverId);
         }
 
         function showServiceModal(driverName, driverWhatsApp) {
@@ -315,25 +326,9 @@
             document.getElementById("service-selection-modal").style.display = "none";
         }
 
-        function selectService(serviceType) {
-            closeServiceModal();
-            const form = document.getElementById("service-form-modal");
-
-            if (serviceType === 'Antar Jemput') {
-                document.getElementById("pickup-location").placeholder = "Alamat Penjemputan";
-                document.getElementById("dropoff-location").placeholder = "Alamat Tujuan";
-                document.getElementById("additional-notes").placeholder = "Pesan untuk Driver";
-            } else if (serviceType === 'Jasa Titip') {
-                document.getElementById("pickup-location").placeholder = "Lokasi Pengambilan";
-                document.getElementById("dropoff-location").placeholder = "Lokasi Pengiriman";
-                document.getElementById("additional-notes").placeholder = "Jenis Barang";
-            } else if (serviceType === 'Jasa Titip Makanan') {
-                document.getElementById("pickup-location").placeholder = "Nama Makanan/Restoran";
-                document.getElementById("dropoff-location").placeholder = "Alamat Pengantaran";
-                document.getElementById("additional-notes").placeholder = "Pesan khusus makanan (opsional)";
-            }
-
-            form.style.display = "flex";
+        function selectService(service) {
+            document.getElementById("service-selection-modal").style.display = "none";
+            document.getElementById("service-form-modal").style.display = "flex";
         }
 
         function closeFormModal() {
@@ -343,20 +338,17 @@
         function submitForm(event) {
             event.preventDefault();
             const name = document.getElementById("customer-name").value;
-            const pickupLocation = document.getElementById("pickup-location").value;
-            const dropoffLocation = document.getElementById("dropoff-location").value;
+            const pickup = document.getElementById("pickup-location").value;
+            const dropoff = document.getElementById("dropoff-location").value;
             const notes = document.getElementById("additional-notes").value;
 
-            const message = `Halo, ${selectedDriverName}! Saya ingin memesan layanan.\n\n` +
-                `Nama: ${name}\n` +
-                `Lokasi Penjemputan: ${pickupLocation}\n` +
-                `Lokasi Tujuan: ${dropoffLocation}\n` +
-                `Catatan Tambahan: ${notes}`;
-
+            const message = `Hi ${selectedDriverName}, saya ingin memesan jasa. Nama saya ${name}, lokasi jemput: ${pickup}, tujuan: ${dropoff}, catatan: ${notes}`;
             const whatsappURL = `https://wa.me/${selectedDriverWhatsApp}?text=${encodeURIComponent(message)}`;
+
             window.open(whatsappURL, "_blank");
 
-            closeFormModal();
+            document.getElementById("service-form-modal").style.display = "none";
+            document.getElementById("service-form").reset();
         }
     </script>
 </body>
