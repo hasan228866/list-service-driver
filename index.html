@@ -188,7 +188,6 @@
         <select id="driver-select">
             <option value="1">Driver 1</option>
             <option value="2">Driver 2</option>
-            
         </select>
         <button onclick="toggleDriverStatus()">Ubah Status</button>
     </div>
@@ -204,7 +203,6 @@
                 <p>No HP: 628895885691</p>
                 <p id="status-label-1">Status: Tersedia</p>
                 <button class="order-button" id="order-1" onclick="showServiceModal('Driver 1', '628895885691')">Order</button>
-        
             </div>
         </div>
     </div>
@@ -282,20 +280,11 @@
             document.getElementById("password").value = "";
         }
 
-        function showMode(mode) {
-            if (mode === "admin") {
-                attemptAdminLogin();
-            } else if (mode === "driver") {
-                document.getElementById("admin-tools").style.display = "none";
-                clearLoginFields();
-            }
-        }
-        
         function toggleDriverStatus() {
             const driverId = document.getElementById("driver-select").value;
             driverAvailability[driverId] = !driverAvailability[driverId];
-            localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
             updateDriverStatus(driverId);
+            localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
         }
 
         function updateDriverStatus(driverId) {
@@ -306,17 +295,21 @@
             if (isAvailable) {
                 statusLabel.textContent = "Status: Tersedia";
                 orderButton.classList.remove("disabled");
+                orderButton.disabled = false;
             } else {
                 statusLabel.textContent = "Status: Tidak Tersedia";
                 orderButton.classList.add("disabled");
+                orderButton.disabled = true;
             }
         }
 
-        for (const driverId in driverAvailability) {
-            updateDriverStatus(driverId);
-        }
-
         function showServiceModal(driverName, driverWhatsApp) {
+            const orderButton = document.getElementById(`order-${driverName.split(" ")[1]}`);
+
+            if (orderButton.classList.contains("disabled")) {
+                return;
+            }
+
             selectedDriverName = driverName;
             selectedDriverWhatsApp = driverWhatsApp;
             document.getElementById("service-selection-modal").style.display = "flex";
@@ -337,19 +330,13 @@
 
         function submitForm(event) {
             event.preventDefault();
-            const name = document.getElementById("customer-name").value;
-            const pickup = document.getElementById("pickup-location").value;
-            const dropoff = document.getElementById("dropoff-location").value;
-            const notes = document.getElementById("additional-notes").value;
-
-            const message = `Hi ${selectedDriverName}, saya ingin memesan jasa. Nama saya ${name}, lokasi jemput: ${pickup}, tujuan: ${dropoff}, catatan: ${notes}`;
-            const whatsappURL = `https://wa.me/${selectedDriverWhatsApp}?text=${encodeURIComponent(message)}`;
-
-            window.open(whatsappURL, "_blank");
-
-            document.getElementById("service-form-modal").style.display = "none";
-            document.getElementById("service-form").reset();
+            alert("Formulir telah dikirim!");
+            closeFormModal();
         }
+
+        window.onload = function() {
+            updateDriverStatus("1");
+        };
     </script>
 </body>
 </html>
