@@ -14,154 +14,82 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
-            overflow: hidden;
-        }
-
-        /* Gaya Header */
-        header {
+            overflow: auto;
             text-align: center;
-            margin-bottom: 30px;
         }
 
-        header h1 {
-            font-size: 3rem;
-            color: #ff4747;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            color: #ccc;
-        }
-
-        /* Gaya Bagian Utama */
-        .content {
-            width: 90%;
-            max-width: 1000px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
+        h1 {
             font-size: 2rem;
             color: #ff4747;
             margin-bottom: 15px;
         }
 
-        .section p {
-            font-size: 1.1rem;
+        p {
+            font-size: 1rem;
             color: #ccc;
-            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .section a {
+        a {
             color: #ff4747;
             text-decoration: none;
-            font-weight: bold;
         }
 
-        .section a:hover {
+        a:hover {
             text-decoration: underline;
         }
 
-        /* Daftar Kredit */
+        /* Gaya Kredit */
         .credits-list {
-            list-style: none;
             padding: 0;
-            margin: 0;
+            list-style: none;
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 20px;
         }
 
         .credits-list li {
-            font-size: 1.2rem;
-            color: #ccc;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin: 10px 0;
         }
 
-        .credits-list li span {
-            font-size: 1rem;
-            color: #888;
-        }
-
-        .credits-list li a {
-            color: #ff4747;
-        }
-
-        /* Gaya Footer */
+        /* Footer */
         footer {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #888;
-        }
-
-        footer a {
-            color: #ff4747;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <div class="content">
-        <header>
-            <h1>Informasi Lebih & Kredit</h1>
-            <p>Pelajari lebih lanjut tentang layanan kami dan beri kredit kepada mereka yang membantu membuat ini mungkin.</p>
-        </header>
+    <h1>Informasi Lebih & Kredit</h1>
+    <p>Pelajari lebih lanjut tentang layanan kami dan beri kredit kepada mereka yang membantu membuat ini mungkin.</p>
 
-        <!-- Bagian Tentang -->
-        <div class="section">
-            <h2>Tentang Layanan Kami</h2>
-            <p>Kami menawarkan berbagai layanan untuk memenuhi kebutuhan transportasi Anda. Apakah itu perjalanan ke tempat kerja, pengantaran paket, atau pengantaran makanan, kami siap membantu. Kami memastikan pengemudi terbaik dan kualitas layanan terbaik.</p>
-            <p>Untuk informasi lebih lanjut, kunjungi <a href="https://gate-web-anjem.vercel.app/" target="_blank">situs web resmi kami</a>.</p>
-        </div>
-
-        <!-- Bagian Kredit -->
-        <div class="section">
-            <h2>Kredit</h2>
-            <ul class="credits-list">
-                <li>
-                    <span>Pengembangan Aplikasi:</span>
-                    <a href="https://www.instagram.com/ahn286_?igsh=YzljYTk1ODg3Zg== " target="_blank">Saya Sendiri</a>
-                </li>
-                <li>
-                    <span>Desain UI/UX:</span>
-                    <a href="https://www.instagram.com/ahn286_?igsh=YzljYTk1ODg3Zg== " target="_blank">Saya Sendiri</a>
-                </li>
-                <li>
-                    <span>Manajemen Database:</span>
-                    <a href="https://www.instagram.com/ahn286_?igsh=YzljYTk1ODg3Zg== " target="_blank">Saya Sendiri</a>
-                </li>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Bagian Kontak -->
-        <div class="section">
-            <h2>Kontak Kami</h2>
-            <p>Jika Anda memiliki pertanyaan atau permintaan, jangan ragu untuk <a href="https://wa.me/628895885691">menghubungi kami melalui Whatsapp.</a>.</p>
-        </div>
-
-        <footer>
-            <p>&copy; 2024 Semua Hak Dilindungi. <a href="terms.html">Syarat & Ketentuan</a> | <a href="privacy.html">Kebijakan Privasi</a></p>
-        </footer>
+    <div>
+        <h2>Tentang Layanan Kami</h2>
+        <p>Aplikasi ini masih dalam tahap peengembangan. Kami menawarkan layanan transportasi terbaik, seperti pengantaran paket dan makanan.</p>
     </div>
+
+    <div>
+        <h2>Kredit</h2>
+        <ul class="credits-list">
+            <li>Pengembangan Aplikasi: <a href="https://www.instagram.com/ahn286_?igsh=YzljYTk1ODg3Zg==" target="_blank">Saya Sendiri</a></li>
+            <li>Desain UI/UX: <a href="https://www.instagram.com/ahn286_?igsh=YzljYTk1ODg3Zg==" target="_blank">Saya Sendiri</a></li>
+            <li>Manajemen Database: <a href="https://www.instagram.com/ahn286_?igsh=YzljYTk1ODg3Zg==" target="_blank">Saya Sendiri</a></li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Kontak Kami</h2>
+        <p>Jika Anda memiliki pertanyaan, <a href="https://wa.me/628895885691">hubungi kami melalui Whatsapp</a>.</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Semua Hak Dilindungi. <a href="terms.html">Syarat & Ketentuan</a> | <a href="privacy.html">Kebijakan Privasi</a></p>
+    </footer>
 
 </body>
 </html>
