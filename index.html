@@ -150,74 +150,6 @@
         .submit-button:hover {
             background-color: #218838;
         }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .side-menu {
-                width: 250px;
-            }
-
-            .side-menu.open {
-                left: 0;
-            }
-
-            .driver-list {
-                margin: 10px;
-            }
-
-            .driver-card {
-                padding: 10px;
-            }
-
-            .form-input {
-                font-size: 14px;
-            }
-
-            .modal-content {
-                width: 90%;
-                max-width: 350px;
-                padding: 15px;
-            }
-
-            .form-modal-content {
-                max-width: 400px;
-                padding: 15px;
-            }
-        }
-
-        /* For very small screens */
-        @media (max-width: 480px) {
-            .modal-content {
-                max-width: 300px;
-                padding: 10px;
-            }
-
-            .driver-card h3 {
-                font-size: 16px;
-            }
-
-            .form-input {
-                font-size: 14px;
-                padding: 8px;
-            }
-
-            .submit-button {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-
-            .menu-icon {
-                top: 5px;
-                left: 5px;
-                width: 25px;
-                height: 25px;
-            }
-
-            .menu-icon div {
-                width: 25px;
-                height: 3px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -399,16 +331,6 @@
 
         function submitForm(event) {
             event.preventDefault();
-            const name = document.getElementById("customer-name").value;
-            const pickup = document.getElementById("pickup-location").value;
-            const dropoff = document.getElementById("dropoff-location").value;
-            const notes = document.getElementById("additional-notes").value;
-
-            const message = `Nama: ${name}%0AAlamat Penjemputan: ${pickup}%0AAlamat Tujuan: ${dropoff}%0APesan untuk Driver: ${notes}`;
-
-            // Kirim pesan WhatsApp
-            window.open(`https://wa.me/${selectedDriverWhatsApp}?text=${message}`, "_blank");
-
             alert("Formulir telah dikirim!");
             closeFormModal();
         }
