@@ -240,15 +240,21 @@
             password: "228866"
         };
 
+        // Load driver availability from localStorage or default to true
         let driverAvailability = JSON.parse(localStorage.getItem("driverAvailability")) || {
             "1": true,
-            "2": true,
-            "3": true
+            "2": true
         };
 
         let selectedDriverName = "";
         let selectedDriverWhatsApp = "";
         let selectedService = "";
+
+        // On page load, update driver statuses from localStorage
+        window.onload = function() {
+            updateDriverStatus("1");
+            updateDriverStatus("2");
+        };
 
         function toggleMenu() {
             const menu = document.getElementById("side-menu");
@@ -270,25 +276,24 @@
             const password = document.getElementById("password").value;
 
             if (username === adminCredentials.username && password === adminCredentials.password) {
-                alert("Login berhasil!");
-                document.getElementById("admin-tools").style.display = "block";
-                closeLoginModal();
+                showAdminTools();
             } else {
-                alert("Username atau password salah!");
+                alert("Login gagal. Periksa username dan password.");
             }
         }
 
-        function clearLoginFields() {
-            document.getElementById("username").value = "";
-            document.getElementById("password").value = "";
+        function showAdminTools() {
+            document.getElementById("login-modal").style.display = "none";
+            document.getElementById("admin-tools").style.display = "block";
         }
 
         function toggleDriverStatus() {
             const driverSelect = document.getElementById("driver-select");
-            const driverId = driverSelect.value;
-            driverAvailability[driverId] = !driverAvailability[driverId];
+            const selectedDriver = driverSelect.value;
+            driverAvailability[selectedDriver] = !driverAvailability[selectedDriver];
             localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
-            updateDriverStatus(driverId);
+
+            updateDriverStatus(selectedDriver);
         }
 
         function updateDriverStatus(driverId) {
@@ -296,11 +301,11 @@
             const orderButton = document.getElementById("order-" + driverId);
 
             if (driverAvailability[driverId]) {
-                statusLabel.textContent = "Status: Tersedia";
-                orderButton.disabled = false;
+                statusLabel.innerText = "Status: Tersedia";
+                orderButton.classList.remove("disabled");
             } else {
-                statusLabel.textContent = "Status: Tidak Tersedia";
-                orderButton.disabled = true;
+                statusLabel.innerText = "Status: Tidak Tersedia";
+                orderButton.classList.add("disabled");
             }
         }
 
@@ -317,97 +322,48 @@
         function selectService(service) {
             selectedService = service;
             document.getElementById("service-selection-modal").style.display = "none";
-            openServiceForm(service);
+            showServiceForm();
         }
 
-        function openServiceForm(service) {
+        function showServiceForm() {
             const formFields = document.getElementById("form-fields");
-            formFields.innerHTML = ""; // Reset form fields
 
-            if (service === "Antar Jemput") {
-                formFields.innerHTML += `
-                    <input class="form-input" type="text" name="name" placeholder="Nama" required>
-                    <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Penjemputan" required>
-                    <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Tujuan" required>
-                    <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            // Clear previous form fields
+            formFields.innerHTML = "";
+
+            if (selectedService === "Antar Jemput") {
+                formFields.innerHTML = `
+                    <input type="text" class="form-input" name="name" placeholder="Nama Lengkap" required>
+                    <input type="tel" class="form-input" name="phone" placeholder="Nomor Telepon" required>
+                    <input type="text" class="form-input" name="pickup" placeholder="Alamat Jemput" required>
+                    <input type="text" class="form-input" name="destination" placeholder="Alamat Tujuan" required>
                 `;
-            } else if (service === "Jasa Titip Barang") {
-                formFields.innerHTML += `
-                    <input class="form-input" type="text" name="name" placeholder="Nama" required>
-                    <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Pengambilan Barang" required>
-                    <input class="form-input" type="text" name="dropOffLocation" placeholder="Tujuan Pengiriman" required>
-                    <input class="form-input" type="text" name="itemType" placeholder="Jenis Barang" required>
-                    <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            } else if (selectedService === "Jasa Titip Barang") {
+                formFields.innerHTML = `
+                    <input type="text" class="form-input" name="name" placeholder="Nama Lengkap" required>
+                    <input type="tel" class="form-input" name="phone" placeholder="Nomor Telepon" required>
+                    <input type="text" class="form-input" name="package" placeholder="Deskripsi Barang" required>
                 `;
-            } else if (service === "Jasa Titip Makanan") {
-                formFields.innerHTML += `
-                    <input class="form-input" type="text" name="name" placeholder="Nama" required>
-                    <input class="form-input" type="text" name="restaurant" placeholder="Makanan/Restoran" required>
-                    <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Pengiriman" required>
-                    <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            } else if (selectedService === "Jasa Titip Makanan") {
+                formFields.innerHTML = `
+                    <input type="text" class="form-input" name="name" placeholder="Nama Lengkap" required>
+                    <input type="tel" class="form-input" name="phone" placeholder="Nomor Telepon" required>
+                    <input type="text" class="form-input" name="food" placeholder="Nama Makanan" required>
                 `;
             }
 
             document.getElementById("service-form-modal").style.display = "flex";
         }
 
-        function closeFormModal() {
-            document.getElementById("service-form-modal").style.display = "none";
-        }
-
         function submitForm(event) {
             event.preventDefault();
-            const formData = new FormData(event.target);
-            const data = {
-                driverName: selectedDriverName,
-                driverWhatsApp: selectedDriverWhatsApp,
-                service: selectedService,
-                details: {}
-            };
-
-            formData.forEach((value, key) => {
-                data.details[key] = value;
-            });
-
-            console.log("Form Data:", data); // You can replace this with your actual submission logic
-            alert("Form submitted!");
+            alert("Formulir telah dikirim!");
             closeFormModal();
         }
 
-        function submitForm(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const data = {
-            driverName: selectedDriverName,
-            driverWhatsApp: selectedDriverWhatsApp,
-            service: selectedService,
-            details: {}
-        };
-
-        formData.forEach((value, key) => {
-            data.details[key] = value;
-        });
-
-        // Membangun pesan WhatsApp
-        const message = `
-            Pesanan Layanan: ${selectedService}
-            Driver: ${selectedDriverName}
-            Alamat Penjemputan: ${data.details['pickupLocation']}
-            Alamat Tujuan: ${data.details['dropOffLocation']}
-            Pesan Tambahan: ${data.details['message'] || 'Tidak ada pesan tambahan'}
-        `;
-
-        // URL WhatsApp untuk mengirim pesan
-        const whatsappURL = `https://wa.me/${selectedDriverWhatsApp}?text=${encodeURIComponent(message)}`;
-
-        // Membuka WhatsApp dengan pesan yang sudah terisi
-        window.open(whatsappURL, '_blank');
-        
-        // Menutup formulir setelah mengirim
-        alert("Formulir telah dikirim ke WhatsApp Driver!");
-        closeFormModal();
-    }
-    
+        function closeFormModal() {
+            document.getElementById("service-form-modal").style.display = "none";
+        }
     </script>
 </body>
 </html>
