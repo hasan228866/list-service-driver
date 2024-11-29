@@ -11,6 +11,8 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
         }
 
         .menu-icon {
@@ -26,8 +28,9 @@
         .menu-icon div {
             width: 30px;
             height: 4px;
-            background: black;
+            background: #000000; /* Red color */
             margin: 5px 0;
+            transition: background 0.3s;
         }
 
         .side-menu {
@@ -36,7 +39,7 @@
             left: -200px;
             width: 200px;
             height: 100%;
-            background: #333;
+            background: #dc3545; /* Red color */
             color: white;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
             transition: left 0.3s ease;
@@ -56,14 +59,15 @@
         .side-menu ul li {
             padding: 15px;
             cursor: pointer;
-            background: #444;
+            background: #c82333; /* Darker red */
             margin: 5px 0;
             border-radius: 5px;
             text-align: center;
+            transition: background 0.3s;
         }
 
         .side-menu ul li:hover {
-            background: #555;
+            background: #bd2130; /* Even darker red */
         }
 
         .modal {
@@ -73,7 +77,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -86,29 +90,40 @@
             text-align: center;
             width: 90%;
             max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .modal-button {
             margin: 10px;
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #dc3545; /* Red color */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background 0.3s;
         }
 
         .modal-button:hover {
-            background-color: #0056b3;
+            background-color: #c82333; /* Darker red */
         }
 
         .admin-tools {
             display: none;
         }
 
-        .order-button.disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+        .order-button {
+            background-color: #28a745; /* Green color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .order-button:hover {
+            background-color: #218838; /* Darker green */
         }
 
         .driver-list {
@@ -120,6 +135,14 @@
             padding: 15px;
             margin-bottom: 10px;
             border-radius: 5px;
+            background-color: #000000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .driver-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .form-modal-content {
@@ -130,11 +153,6 @@
         .form-input {
             display: block;
             width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
         }
 
         .submit-button {
@@ -165,7 +183,7 @@
         <ul>
             <li onclick="attemptAdminLogin()">Mode Admin</li>
             <li onclick="showMode('driver')">Mode Driver</li>
-            <li><a href="more.html" style="color: white; text-decoration: none;">More</a></li>
+            <li><a href="more.html" style="color: white; text-decoration: none;">Lainnya</a></li>
             <li><a href="https://teer.id/han682" style="color: white; text-decoration: none;">Dukungannya kak biar makin semangat</a></li>
         </ul>
     </div>
@@ -195,186 +213,102 @@
     </div>
 
     <!-- Driver List -->
-    <div class="services-container">
-        <h1>List Driver Terbaik Kami</h1>
-        <div class="driver-list">
-            <div class="driver-card" id="driver-1">
-                <h3>Driver 1 (18thn)</h3>
-                <p>Alamat: Manyaran-Semarang Barat</p>
-                <p>Kendaraan: Honda Beat Merah</p>
-                <p>No HP: 628895885691</p>
-                <p id="status-label-1">Status: Tersedia</p>
-                <button class="order-button" id="order-1" onclick="showServiceModal('Driver 1', '628895885691')">Order</button>
+<div class="services-container">
+    <h1>List Driver Terbaik Kami</h1>
+    <div class="driver-list">
+        <div class="driver-card" id="driver-1">
+            <h3>Driver 1 (18thn)</h3>
+            <p>Alamat: Manyaran-Semarang Barat</p>
+            <p>Kendaraan: Honda Beat Merah</p>
+            <p>No HP: 628895885691</p>
+            <p id="status-label-1">Status: Tersedia</p>
+            <button class="order-button" id="order-1" onclick="showServiceModal('Driver 1', '628895885691')">Order</button>
+        </div>
+    </div>
+</div>
+
+<!-- Service Selection Modal -->
+<div class="modal" id="service-selection-modal">
+    <div class="modal-content">
+        <h2>Pilih Layanan</h2>
+        <button class="modal-button" onclick="selectService('Antar Jemput')">Jasa Antar Jemput</button>
+        <button class="modal-button" onclick="selectService('Jasa Titip Barang')">Jasa Titip Barang</button>
+        <button class="modal-button" onclick="selectService('Jasa Titip Makanan')">Jasa Titip Makanan</button>
+        <button class="modal-button" onclick="closeServiceModal()">Batal</button>
+    </div>
+</div>
+
+<!-- Service Form Modal -->
+<div class="modal" id="service-form-modal">
+    <div class="modal-content form-modal-content">
+        <h2>Formulir Layanan</h2>
+        <form id="service-form" onsubmit="submitForm(event)">
+            <div id="form-fields">
+                <!-- Fields will be populated dynamically based on service selection -->
             </div>
-        </div>
+            <button type="submit" class="submit-button">Kirim</button>
+        </form>
+        <button class="modal-button" onclick="closeFormModal()">Batal</button>
     </div>
+</div>
 
-    <!-- Service Selection Modal -->
-    <div class="modal" id="service-selection-modal">
-        <div class="modal-content">
-            <h2>Pilih Layanan</h2>
-            <button class="modal-button" onclick="selectService('Antar Jemput')">Jasa Antar Jemput</button>
-            <button class="modal-button" onclick="selectService('Jasa Titip Barang')">Jasa Titip Barang</button>
-            <button class="modal-button" onclick="selectService('Jasa Titip Makanan')">Jasa Titip Makanan</button>
-            <button class="modal-button" onclick="closeServiceModal()">Batal</button>
-        </div>
-    </div>
+<script>
+    let selectedDriverName = "";
+    let selectedDriverWhatsApp = "";
+    let selectedService = "";
 
-    <!-- Service Form Modal -->
-    <div class="modal" id="service-form-modal">
-        <div class="modal-content form-modal-content">
-            <h2>Formulir Layanan</h2>
-            <form id="service-form" onsubmit="submitForm(event)">
-                <div id="form-fields">
-                    <!-- Fields will be populated dynamically based on service selection -->
-                </div>
-                <button type="submit" class="submit-button">Kirim</button>
-            </form>
-            <button class="modal-button" onclick="closeFormModal()">Batal</button>
-        </div>
-    </div>
+    function showServiceModal(driverName, driverWhatsApp) {
+        selectedDriverName = driverName;
+        selectedDriverWhatsApp = driverWhatsApp;
+        document.getElementById("service-selection-modal").style.display = "flex";
+    }
 
-    <script>
-        const adminCredentials = {
-            username: "hasan",
-            password: "228866"
-        };
+    function closeServiceModal() {
+        document.getElementById("service-selection-modal").style.display = "none";
+    }
 
-        let driverAvailability = JSON.parse(localStorage.getItem("driverAvailability")) || {
-            "1": true,
-            "2": true,
-            "3": true
-        };
+    function selectService(service) {
+        selectedService = service;
+        document.getElementById("service-selection-modal").style.display = "none";
+        openServiceForm(service);
+    }
 
-        let selectedDriverName = "";
-        let selectedDriverWhatsApp = "";
-        let selectedService = "";
+    function openServiceForm(service) {
+        const formFields = document.getElementById("form-fields");
+        formFields.innerHTML = ""; // Reset form fields
 
-        function toggleMenu() {
-            const menu = document.getElementById("side-menu");
-            menu.classList.toggle("open");
+        if (service === "Antar Jemput") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Penjemputan" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Tujuan" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        } else if (service === "Jasa Titip Barang") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Pengambilan Barang" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Tujuan Pengiriman" required>
+                <input class="form-input" type="text" name="itemType" placeholder="Jenis Barang" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        } else if (service === "Jasa Titip Makanan") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="restaurant" placeholder="Makanan/Restoran" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Pengiriman" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
         }
 
-        function attemptAdminLogin() {
-            document.getElementById("login-modal").style.display = "flex";
-        }
+        document.getElementById("service-form-modal").style.display = "flex";
+    }
 
-        function closeLoginModal() {
-            document.getElementById("login-modal").style.display = "none";
-            clearLoginFields();
-        }
+    function closeFormModal() {
+        document.getElementById("service-form-modal").style.display = "none";
+    }
 
-        function validateLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            if (username === adminCredentials.username && password === adminCredentials.password) {
-                alert("Login berhasil!");
-                document.getElementById("admin-tools").style.display = "block";
-                closeLoginModal();
-            } else {
-                alert("Username atau password salah!");
-            }
-        }
-
-        function clearLoginFields() {
-            document.getElementById("username").value = "";
-            document.getElementById("password").value = "";
-        }
-
-        function toggleDriverStatus() {
-            const driverSelect = document.getElementById("driver-select");
-            const driverId = driverSelect.value;
-            driverAvailability[driverId] = !driverAvailability[driverId];
-            localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
-            updateDriverStatus(driverId);
-        }
-
-        function updateDriverStatus(driverId) {
-            const statusLabel = document.getElementById("status-label-" + driverId);
-            const orderButton = document.getElementById("order-" + driverId);
-
-            if (driverAvailability[driverId]) {
-                statusLabel.textContent = "Status: Tersedia";
-                orderButton.disabled = false;
-            } else {
-                statusLabel.textContent = "Status: Tidak Tersedia";
-                orderButton.disabled = true;
-            }
-        }
-
-        function showServiceModal(driverName, driverWhatsApp) {
-            selectedDriverName = driverName;
-            selectedDriverWhatsApp = driverWhatsApp;
-            document.getElementById("service-selection-modal").style.display = "flex";
-        }
-
-        function closeServiceModal() {
-            document.getElementById("service-selection-modal").style.display = "none";
-        }
-
-        function selectService(service) {
-            selectedService = service;
-            document.getElementById("service-selection-modal").style.display = "none";
-            openServiceForm(service);
-        }
-
-        function openServiceForm(service) {
-            const formFields = document.getElementById("form-fields");
-            formFields.innerHTML = ""; // Reset form fields
-
-            if (service === "Antar Jemput") {
-                formFields.innerHTML += `
-                    <input class="form-input" type="text" name="name" placeholder="Nama" required>
-                    <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Penjemputan" required>
-                    <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Tujuan" required>
-                    <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
-                `;
-            } else if (service === "Jasa Titip Barang") {
-                formFields.innerHTML += `
-                    <input class="form-input" type="text" name="name" placeholder="Nama" required>
-                    <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Pengambilan Barang" required>
-                    <input class="form-input" type="text" name="dropOffLocation" placeholder="Tujuan Pengiriman" required>
-                    <input class="form-input" type="text" name="itemType" placeholder="Jenis Barang" required>
-                    <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
-                `;
-            } else if (service === "Jasa Titip Makanan") {
-                formFields.innerHTML += `
-                    <input class="form-input" type="text" name="name" placeholder="Nama" required>
-                    <input class="form-input" type="text" name="restaurant" placeholder="Makanan/Restoran" required>
-                    <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Pengiriman" required>
-                    <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
-                `;
-            }
-
-            document.getElementById("service-form-modal").style.display = "flex";
-        }
-
-        function closeFormModal() {
-            document.getElementById("service-form-modal").style.display = "none";
-        }
-
-        function submitForm(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const data = {
-                driverName: selectedDriverName,
-                driverWhatsApp: selectedDriverWhatsApp,
-                service: selectedService,
-                details: {}
-            };
-
-            formData.forEach((value, key) => {
-                data.details[key] = value;
-            });
-
-            console.log("Form Data:", data); // You can replace this with your actual submission logic
-            alert("Form submitted!");
-            closeFormModal();
-        }
-
-        function submitForm(event) {
+    function submitForm(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
         const data = {
@@ -408,6 +342,74 @@
         alert("Formulir telah dikirim ke WhatsApp Driver!");
         closeFormModal();
     }
+</script>
+
+
+    
+    <script>
+        const adminCredentials = {
+            username: "hasan",
+            password: "228866"
+        };
+
+        function toggleMenu() {
+            const menu = document.getElementById("side-menu");
+            menu.classList.toggle("open");
+        }
+
+        function attemptAdminLogin() {
+            document.getElementById("login-modal").style.display = "flex";
+        }
+
+        function closeLoginModal() {
+            document.getElementById("login-modal").style.display = "none";
+            clearLoginFields();
+        }
+
+        function validateLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                alert("Login berhasil!");
+                // Redirect to admin tools page
+                window.location.href = "admin-tools.html";
+            } else {
+                alert("Username atau password salah!");
+            }
+        }
+
+        function clearLoginFields() {
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+
+        function toggleDriverStatus() {
+            const driverSelect = document.getElementById("driver-select");
+            const driverId = driverSelect.value;
+            driverAvailability[driverId] = !driverAvailability[driverId];
+            localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
+            updateDriverStatus(driverId);
+        }
+
+        function updateDriverStatus(driverId) {
+            const statusLabel = document.getElementById("status-label-" + driverId);
+            const orderButton = document.getElementById("order-" + driverId);
+
+            if (driverAvailability[driverId]) {
+                statusLabel.textContent = "Status: Tersedia";
+                orderButton.disabled = false;
+            } else {
+                statusLabel.textContent = "Status: Tidak Tersedia";
+                orderButton.disabled = true;
+            }
+        }
+
+        const driverAvailability = JSON.parse(localStorage.getItem("driverAvailability")) || { 1: true, 2: true };
+        updateDriverStatus(1);
+        updateDriverStatus(2);
+
 
     </script>
 </body>
