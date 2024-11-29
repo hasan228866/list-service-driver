@@ -1,427 +1,416 @@
-/* Basic Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', Arial, sans-serif;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Driver</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Existing styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
 
-/* Body Styling with Animated Background */
-body {
-    background: linear-gradient(-45deg, #ff3333, #1a1a1a, #760000, #1a1a1a);
-    background-size: 400% 400%;
-    animation: gradientShift 8s ease infinite;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
+        .menu-icon {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1000;
+        }
 
-/* Gradient Animation */
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+        .menu-icon div {
+            width: 30px;
+            height: 4px;
+            background: #000000; /* Red color */
+            margin: 5px 0;
+            transition: background 0.3s;
+        }
 
-/* Container for Services */
-.services-container {
-    text-align: center;
-    max-width: 800px;
-    padding: 30px;
-    margin: 0 auto;
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
-}
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -200px;
+            width: 200px;
+            height: 100%;
+            background: #dc3545; /* Red color */
+            color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            z-index: 999;
+        }
 
-/* Title Styling */
-.services-container h1 {
-    color: #ff3333;
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    text-shadow: 3px 3px 5px #000;
-    animation: slideIn 1.5s ease forwards;
-    opacity: 0;
-}
+        .side-menu.open {
+            left: 0;
+        }
 
-/* Slide In Animation for Title */
-@keyframes slideIn {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
+        .side-menu ul {
+            list-style: none;
+            padding: 20px;
+            margin: 0;
+        }
 
-/* Driver List Styling */
-.driver-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
+        .side-menu ul li {
+            padding: 15px;
+            cursor: pointer;
+            background: #c82333; /* Darker red */
+            margin: 5px 0;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s;
+        }
 
-/* Driver Card Styling */
-.driver-card {
-    background: rgba(38, 38, 38, 0.9);
-    border-radius: 15px;
-    padding: 20px;
-    width: 260px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
+        .side-menu ul li:hover {
+            background: #bd2130; /* Even darker red */
+        }
 
-.driver-card:hover {
-    transform: translateY(-10px) scale(1.02) rotate(-1deg);
-    box-shadow: 0 6px 15px rgba(255, 51, 51, 0.6);
-    background-color: rgba(44, 44, 44, 0.95);
-}
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
 
-/* Glowing Effect */
-.driver-card::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
-    transform: scale(0);
-    transition: transform 0.5s ease;
-    z-index: -1;
-}
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-.driver-card:hover::after {
-    transform: scale(1);
-}
+        .modal-button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Red color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
 
-.driver-card h3 {
-    color: #ff3333;
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    text-shadow: 1px 1px 4px #000;
-}
+        .modal-button:hover {
+            background-color: #c82333; /* Darker red */
+        }
 
-.driver-card p {
-    color: #ccc;
-    margin-bottom: 15px;
-    font-size: 1em;
-    text-align: left;
-}
+        .admin-tools {
+            display: none;
+        }
 
-/* Order Button Styling */
-.order-button {
-    background-color: #ff3333;
-    color: #fff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
+        .order-button {
+            background-color: #28a745; /* Green color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
 
-.order-button:hover {
-    background-color: #e62e2e;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 4px 8px rgba(255, 51, 51, 0.5);
-}
+        .order-button:hover {
+            background-color: #218838; /* Darker green */
+        }
 
-/* Modal Styling */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+        .driver-list {
+            margin: 20px;
+        }
 
-.modal-content {
-    background-color: #262626;
-    padding: 30px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    color: #fff;
-    position: relative;
-    animation: fadeIn 0.4s ease forwards;
-    opacity: 0;
-}
+        .driver-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #000000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
 
-/* Modal Header Styling */
-.modal-content h2 {
-    color: #ff3333;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-}
+        .driver-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-/* Modal Buttons */
-.modal-button {
-    background-color: #ff3333;
-    color: #fff;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    margin: 10px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
+        .form-modal-content {
+            width: 100%;
+            max-width: 500px;
+        }
 
-.modal-button:hover {
-    background-color: #e62e2e;
-    transform: scale(1.1);
-}
+        .form-input {
+            display: block;
+            width: 100%;
+        }
 
-/* Modal Close Button */
-.modal-close {
-    background-color: #444;
-    color: #ccc;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9em;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: background-color 0.3s ease;
-}
+        .submit-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-.modal-close:hover {
-    background-color: #555;
-    color: #fff;
-}
+        .submit-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Icon -->
+    <div class="menu-icon" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
 
-/* Show Modal Class */
-.modal.show {
-    display: flex;
-}
+    <!-- Side Menu -->
+    <div class="side-menu" id="side-menu">
+        <ul>
+            <li onclick="attemptAdminLogin()">Mode Admin</li>
+            <li onclick="showMode('driver')">Mode Driver</li>
+            <li><a href="more.html" style="color: white; text-decoration: none;">Lainnya</a></li>
+            <li><a href="https://teer.id/han682" style="color: white; text-decoration: none;">Dukungannya kak biar makin semangat</a></li>
+        </ul>
+    </div>
 
-/* Fade In Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <h2>Login Admin</h2>
+            <form id="login-form" onsubmit="validateLogin(event)">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" class="modal-button">Login</button>
+            </form>
+            <button class="modal-button" onclick="closeLoginModal()">Batal</button>
+        </div>
+    </div>
 
-/* Accessibility: Hidden Elements */
-.hidden {
-    display: none;
-}
+    <!-- Admin Tools -->
+    <div class="admin-tools" id="admin-tools">
+        <h2>Pengaturan Ketersediaan Layanan</h2>
+        <label for="driver-select">Pilih Driver:</label>
+        <select id="driver-select">
+            <option value="1">Driver 1</option>
+            <option value="2">Driver 2</option>
+        </select>
+        <button onclick="toggleDriverStatus()">Ubah Status</button>
+    </div>
 
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-    color: #343a40;
-}
+    <!-- Driver List -->
+<div class="services-container">
+    <h1>List Driver Terbaik Kami</h1>
+    <div class="driver-list">
+        <div class="driver-card" id="driver-1">
+            <h3>Driver 1 (18thn)</h3>
+            <p>Alamat: Manyaran-Semarang Barat</p>
+            <p>Kendaraan: Honda Beat Merah</p>
+            <p>No HP: 628895885691</p>
+            <p id="status-label-1">Status: Tersedia</p>
+            <button class="order-button" id="order-1" onclick="showServiceModal('Driver 1', '628895885691')">Order</button>
+        </div>
+    </div>
+</div>
 
-/* Side Menu */
-.side-menu {
-    width: 80%; /* Adjust width for mobile */
-    max-width: 300px; /* Limit max width */
-}
+<!-- Service Selection Modal -->
+<div class="modal" id="service-selection-modal">
+    <div class="modal-content">
+        <h2>Pilih Layanan</h2>
+        <button class="modal-button" onclick="selectService('Antar Jemput')">Jasa Antar Jemput</button>
+        <button class="modal-button" onclick="selectService('Jasa Titip Barang')">Jasa Titip Barang</button>
+        <button class="modal-button" onclick="selectService('Jasa Titip Makanan')">Jasa Titip Makanan</button>
+        <button class="modal-button" onclick="closeServiceModal()">Batal</button>
+    </div>
+</div>
 
-/* Admin Tools */
-.admin-tools {
-    padding: 15px; /* Adjust padding for mobile */
-}
+<!-- Service Form Modal -->
+<div class="modal" id="service-form-modal">
+    <div class="modal-content form-modal-content">
+        <h2>Formulir Layanan</h2>
+        <form id="service-form" onsubmit="submitForm(event)">
+            <div id="form-fields">
+                <!-- Fields will be populated dynamically based on service selection -->
+            </div>
+            <button type="submit" class="submit-button">Kirim</button>
+        </form>
+        <button class="modal-button" onclick="closeFormModal()">Batal</button>
+    </div>
+</div>
 
-/* Responsive Media Queries */
-@media (max-width: 600px) {
-    .menu-icon {
-        width: 25px; /* Smaller menu icon */
-        height: 25px;
-    }
+<script>
+    let selectedDriverName = "";
+    let selectedDriverWhatsApp = "";
+    let selectedService = "";
 
-    .menu-icon div {
-        height: 3px; /* Thinner lines */
-    }
-
-    .side-menu {
-        width: 100%; /* Full width on mobile */
+    function showServiceModal(driverName, driverWhatsApp) {
+        selectedDriverName = driverName;
+        selectedDriverWhatsApp = driverWhatsApp;
+        document.getElementById("service-selection-modal").style.display = "flex";
     }
 
-    .admin-tools h2 {
-        font-size: 1.5em; /* Smaller title */
+    function closeServiceModal() {
+        document.getElementById("service-selection-modal").style.display = "none";
     }
 
-    .admin-tools button {
-        padding: 8px; /* Smaller button padding */
-        font-size: 0.9em; /* Smaller font size */
+    function selectService(service) {
+        selectedService = service;
+        document.getElementById("service-selection-modal").style.display = "none";
+        openServiceForm(service);
     }
 
-    .driver-card {
-        padding: 10px; /* Adjust padding for driver cards */
-    }
-}
+    function openServiceForm(service) {
+        const formFields = document.getElementById("form-fields");
+        formFields.innerHTML = ""; // Reset form fields
 
-/* Modal Background */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
+        if (service === "Antar Jemput") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Penjemputan" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Tujuan" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        } else if (service === "Jasa Titip Barang") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Pengambilan Barang" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Tujuan Pengiriman" required>
+                <input class="form-input" type="text" name="itemType" placeholder="Jenis Barang" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        } else if (service === "Jasa Titip Makanan") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="restaurant" placeholder="Makanan/Restoran" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Pengiriman" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        }
 
-/* Form Modal Content */
-.form-modal-content {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 600px;
-    text-align: left;
-}
-
-/* Modal Header */
-h2 {
-    color: #333;
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Form Input Fields */
-.form-input {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    color: #333;
-    background-color: #f9f9f9;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-/* Focused Input Fields */
-.form-input:focus {
-    border-color: #3498db;
-    background-color: #fff;
-    outline: none;
-}
-
-/* Form Textarea */
-textarea.form-input {
-    height: 120px;
-    resize: vertical;
-    line-height: 1.5;
-    padding-top: 12px;
-}
-
-/* Submit Button */
-.submit-button {
-    background-color: #3498db;
-    color: #fff;
-    padding: 14px 30px;
-    border: none;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-sizing: border-box;
-}
-
-.submit-button:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-}
-
-.submit-button:focus {
-    outline: none;
-}
-
-/* Cancel Button */
-.modal-button {
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-    width: 100%;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.modal-button:hover {
-    background-color: #c0392b;
-    transform: translateY(-2px);
-}
-
-.modal-button:focus {
-    outline: none;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .form-modal-content {
-        padding: 20px;
+        document.getElementById("service-form-modal").style.display = "flex";
     }
 
-    h2 {
-        font-size: 24px;
+    function closeFormModal() {
+        document.getElementById("service-form-modal").style.display = "none";
     }
 
-    .form-input {
-        padding: 12px;
+    function submitForm(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const data = {
+            driverName: selectedDriverName,
+            driverWhatsApp: selectedDriverWhatsApp,
+            service: selectedService,
+            details: {}
+        };
+
+        formData.forEach((value, key) => {
+            data.details[key] = value;
+        });
+
+        // Membangun pesan WhatsApp
+        const message = `
+            Pesanan Layanan: ${selectedService}
+            Driver: ${selectedDriverName}
+            No HP Driver: ${selectedDriverWhatsApp}
+            Alamat Penjemputan: ${data.details['pickupLocation']}
+            Alamat Tujuan: ${data.details['dropOffLocation']}
+            Pesan Tambahan: ${data.details['message'] || 'Tidak ada pesan tambahan'}
+        `;
+
+        // URL WhatsApp untuk mengirim pesan
+        const whatsappURL = `https://wa.me/${selectedDriverWhatsApp}?text=${encodeURIComponent(message)}`;
+
+        // Membuka WhatsApp dengan pesan yang sudah terisi
+        window.open(whatsappURL, '_blank');
+        
+        // Menutup formulir setelah mengirim
+        alert("Formulir telah dikirim ke WhatsApp Driver!");
+        closeFormModal();
     }
+</script>
 
-    .submit-button {
-        padding: 12px 25px;
-    }
-}
 
-.back-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff; /* Blue color */
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background 0.3s ease;
-}
+    
+    <script>
+        const adminCredentials = {
+            username: "hasan",
+            password: "228866"
+        };
 
-.back-button:hover {
-    background-color: #0056b3; /* Darker blue */
-}
+        function toggleMenu() {
+            const menu = document.getElementById("side-menu");
+            menu.classList.toggle("open");
+        }
+
+        function attemptAdminLogin() {
+            document.getElementById("login-modal").style.display = "flex";
+        }
+
+        function closeLoginModal() {
+            document.getElementById("login-modal").style.display = "none";
+            clearLoginFields();
+        }
+
+        function validateLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                alert("Login berhasil!");
+                // Redirect to admin tools page
+                window.location.href = "admin-tools.html";
+            } else {
+                alert("Username atau password salah!");
+            }
+        }
+
+        function clearLoginFields() {
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+
+        function toggleDriverStatus() {
+            const driverSelect = document.getElementById("driver-select");
+            const driverId = driverSelect.value;
+            driverAvailability[driverId] = !driverAvailability[driverId];
+            localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
+            updateDriverStatus(driverId);
+        }
+
+        function updateDriverStatus(driverId) {
+            const statusLabel = document.getElementById("status-label-" + driverId);
+            const orderButton = document.getElementById("order-" + driverId);
+
+            if (driverAvailability[driverId]) {
+                statusLabel.textContent = "Status: Tersedia";
+                orderButton.disabled = false;
+            } else {
+                statusLabel.textContent = "Status: Tidak Tersedia";
+                orderButton.disabled = true;
+            }
+        }
+
+        const driverAvailability = JSON.parse(localStorage.getItem("driverAvailability")) || { 1: true, 2: true };
+        updateDriverStatus(1);
+        updateDriverStatus(2);
+
+
+    </script>
+</body>
+</html>
