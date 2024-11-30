@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Tools</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <script type="module">
+        // Mengimpor Firebase dan Realtime Database
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, set, get, child, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+      
+        // Firebase config
+        const firebaseConfig = {
+          apiKey: "AIzaSyCywX6xVGPhIZNoP1u5ORvEXwdqVplatzQ",
+          authDomain: "eat-n-trip-3769c.firebaseapp.com",
+          databaseURL: "https://eat-n-trip-3769c-default-rtdb.firebaseio.com",
+          projectId: "eat-n-trip-3769c",
+          storageBucket: "eat-n-trip-3769c.firebasestorage.app",
+          messagingSenderId: "926647796765",
+          appId: "1:926647796765:web:4c33b5774d4ed0c3d672f4"
+        };
+      
+        // Inisialisasi Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+      </script>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -71,6 +93,7 @@
         }
     </style>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
 <body>
 
     <div class="admin-tools">
