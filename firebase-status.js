@@ -1,8 +1,11 @@
-// Import the functions you need from the Firebase SDK
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database"; // Import Realtime Database functions
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCywX6xVGPhIZNoP1u5ORvEXwdqVplatzQ",
   authDomain: "eat-n-trip-3769c.firebaseapp.com",
@@ -16,19 +19,31 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-// Initialize Realtime Database
-const database = getDatabase(app);
+const driversRef = firebase.database().ref('drivers');
 
-// Function to add a driver
-function addDriver(driverId, name, available) {
-  const driverRef = ref(database, 'drivers/' + driverId);
-  set(driverRef, {
-    name: name,
-    available: available
-  });
+driversRef.on('value', (snapshot) => {
+    const drivers = snapshot.val();
+    for (const driverId in drivers) {
+        const statusLabel = document.getElementById(`status-label-${driverId}`);
+        const orderButton = document.getElementById(`order-${driverId}`);
+        
+        if (drivers[driverId].available) {
+            statusLabel.textContent = "Status: Tersedia";
+            orderButton.disabled = false;
+        } else {
+            statusLabel.textContent = "Status: Tidak Tersedia";
+            orderButton.disabled = true;
+        }
+    }
+});
+
+function toggleDriverStatus(driverId) {
+    const driverRef = firebase.database().ref(`drivers/${driverId}`);
+    driverRef.once('value').then((snapshot) => {
+        const currentStatus = snapshot.val().available;
+        driverRef.update({ available: !currentStatus });
+    });
 }
 
-// Menambahkan dua driver contoh
-addDriver(1, "Driver 1", true);  // Driver 1, available
-addDriver(2, "Driver 2", false); // Driver 2, not available
