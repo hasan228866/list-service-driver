@@ -1,0 +1,14 @@
+{
+    "drivers": {
+      "1": {
+        "name": "Driver 1",
+        "available": true
+      },
+      "2": {
+        "name": "Driver 2",
+        "available": false
+      }
+    }
+  }
+
+  
