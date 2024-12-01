@@ -70,3 +70,9 @@ try {
     console.error("Error updating driver status:", error);
     alert("Terjadi kesalahan saat mengubah status driver. Silakan coba lagi. Error: " + error.message);
 }
+
+const databaseRef = firebase.database().ref('drivers');
+databaseRef.once('value', (snapshot) => {
+    console.log("Connected to Firebase:", snapshot.val());
+});
+
