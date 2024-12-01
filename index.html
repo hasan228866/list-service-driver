@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js"></script>
@@ -9,11 +10,10 @@
     
     <script src="./scripts/firebase-status.js"></script>
 
-
     <script>
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCywX6xVGPhIZNoP1u5ORvEXwdqVplatzQ",
+  apiKey: "AIzaSyCywX6xVGPhIZNoP1u5ORvEXwdqVplatzQ",
   authDomain: "eat-n-trip-3769c.firebaseapp.com",
   databaseURL: "https://eat-n-trip-3769c-default-rtdb.firebaseio.com",
   projectId: "eat-n-trip-3769c",
@@ -30,10 +30,11 @@ const firebaseConfig = {
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Tools</title>
+    <title>Daftar Driver</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body {  
+        /* Existing styles */
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -41,66 +42,194 @@ const firebaseConfig = {
             color: #343a40;
         }
 
-        .admin-tools {
+        .menu-icon {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .menu-icon div {
+            width: 30px;
+            height: 4px;
+            background: #000000; /* Red color */
+            margin: 5px 0;
+            transition: background 0.3s;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -200px;
+            width: 200px;
+            height: 100%;
+            background: #dc3545; /* Red color */
+            color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            z-index: 999;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .side-menu ul {
+            list-style: none;
             padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            margin: 20px;
+            margin: 0;
         }
 
-        .admin-tools h2 {
-            color: #dc3545; /* Red color */
-        }
-
-        .admin-tools label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-
-        .admin-tools select,
-        .admin-tools button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+        .side-menu ul li {
+            padding: 15px;
+            cursor: pointer;
+            background: #c82333; /* Darker red */
+            margin: 5px 0;
             border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
+            text-align: center;
+            transition: background 0.3s;
         }
 
-        .admin-tools button {
+        .side-menu ul li:hover {
+            background: #bd2130; /* Even darker red */
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-button {
+            margin: 10px;
+            padding: 10px 20px;
             background-color: #dc3545; /* Red color */
             color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
             transition: background 0.3s;
         }
 
-        .admin-tools button:hover {
+        .modal-button:hover {
             background-color: #c82333; /* Darker red */
         }
 
-        /* Style for the back button */
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff; /* Blue color */
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background 0.3s ease;
+        .admin-tools {
+            display: none;
         }
 
-        .back-button:hover {
-            background-color: #0056b3; /* Darker blue */
+        .order-button {
+            background-color: #28a745; /* Green color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .order-button:hover {
+            background-color: #218838; /* Darker green */
+        }
+
+        .driver-list {
+            margin: 20px;
+        }
+
+        .driver-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #000000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .driver-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-modal-content {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-input {
+            display: block;
+            width: 100%;
+        }
+
+        .submit-button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
+    <!-- Menu Icon -->
+    <div class="menu-icon" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
 
-    <div class="admin-tools">
+    <!-- Side Menu -->
+    <div class="side-menu" id="side-menu">
+        <ul>
+            <li onclick="attemptAdminLogin()">Mode Admin</li>
+            <li onclick="showMode('driver')">Mode Driver</li>
+            <li><a href="more.html" style="color: white; text-decoration: none;">Lainnya</a></li>
+            <li><a href="https://teer.id/han682" style="color: white; text-decoration: none;">Dukungannya kak biar makin semangat</a></li>
+        </ul>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <h2>Login Admin</h2>
+            <form id="login-form" onsubmit="validateLogin(event)">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" class="modal-button">Login</button>
+            </form>
+            <button class="modal-button" onclick="closeLoginModal()">Batal</button>
+        </div>
+    </div>
+
+    <!-- Admin Tools -->
+    <div class="admin-tools" id="admin-tools">
         <h2>Pengaturan Ketersediaan Layanan</h2>
         <label for="driver-select">Pilih Driver:</label>
         <select id="driver-select">
@@ -108,33 +237,207 @@ const firebaseConfig = {
             <option value="2">Driver 2</option>
         </select>
         <button onclick="toggleDriverStatus()">Ubah Status</button>
-
-        <!-- Back Button -->
-        <a href="index.html" class="back-button">Kembali ke Menu</a>
     </div>
 
-    <script>
-        // Fetch saved driver availability from localStorage or initialize it
-        let driverAvailability = JSON.parse(localStorage.getItem("driverAvailability")) || {
-            "1": true,
-            "2": true
+    <!-- Driver List -->
+<div class="services-container">
+    <h1>List Driver Terbaik Kami</h1>
+    <div class="driver-list">
+        <div class="driver-card" id="driver-1">
+            <h3>Driver 1 (18thn)</h3>
+            <p>Alamat: Manyaran-Semarang Barat</p>
+            <p>Kendaraan: Honda Beat Merah</p>
+            <p>No HP: 628895885691</p>
+            <p id="status-label-1">Status: Tersedia</p>
+            <button class="order-button" id="order-1" onclick="showServiceModal('Driver 1', '628895885691')">Order</button>
+        </div>
+    </div>
+</div>
+
+<!-- Service Selection Modal -->
+<div class="modal" id="service-selection-modal">
+    <div class="modal-content">
+        <h2>Pilih Layanan</h2>
+        <button class="modal-button" onclick="selectService('Antar Jemput')">Jasa Antar Jemput</button>
+        <button class="modal-button" onclick="selectService('Jasa Titip Barang')">Jasa Titip Barang</button>
+        <button class="modal-button" onclick="selectService('Jasa Titip Makanan')">Jasa Titip Makanan</button>
+        <button class="modal-button" onclick="closeServiceModal()">Batal</button>
+    </div>
+</div>
+
+<!-- Service Form Modal -->
+<div class="modal" id="service-form-modal">
+    <div class="modal-content form-modal-content">
+        <h2>Formulir Layanan</h2>
+        <form id="service-form" onsubmit="submitForm(event)">
+            <div id="form-fields">
+                <!-- Fields will be populated dynamically based on service selection -->
+            </div>
+            <button type="submit" class="submit-button">Kirim</button>
+        </form>
+        <button class="modal-button" onclick="closeFormModal()">Batal</button>
+    </div>
+</div>
+
+<script>
+    let selectedDriverName = "";
+    let selectedDriverWhatsApp = "";
+    let selectedService = "";
+
+    function showServiceModal(driverName, driverWhatsApp) {
+        selectedDriverName = driverName;
+        selectedDriverWhatsApp = driverWhatsApp;
+        document.getElementById("service-selection-modal").style.display = "flex";
+    }
+
+    function closeServiceModal() {
+        document.getElementById("service-selection-modal").style.display = "none";
+    }
+
+    function selectService(service) {
+        selectedService = service;
+        document.getElementById("service-selection-modal").style.display = "none";
+        openServiceForm(service);
+    }
+
+    function openServiceForm(service) {
+        const formFields = document.getElementById("form-fields");
+        formFields.innerHTML = ""; // Reset form fields
+
+        if (service === "Antar Jemput") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Penjemputan" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Tujuan" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        } else if (service === "Jasa Titip Barang") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="pickupLocation" placeholder="Alamat Pengambilan Barang" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Tujuan Pengiriman" required>
+                <input class="form-input" type="text" name="itemType" placeholder="Jenis Barang" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        } else if (service === "Jasa Titip Makanan") {
+            formFields.innerHTML += `
+                <input class="form-input" type="text" name="name" placeholder="Nama" required>
+                <input class="form-input" type="text" name="restaurant" placeholder="Makanan/Restoran" required>
+                <input class="form-input" type="text" name="dropOffLocation" placeholder="Alamat Pengiriman" required>
+                <textarea class="form-input" name="message" placeholder="Pesan (Opsional)"></textarea>
+            `;
+        }
+
+        document.getElementById("service-form-modal").style.display = "flex";
+    }
+
+    function closeFormModal() {
+        document.getElementById("service-form-modal").style.display = "none";
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const data = {
+            driverName: selectedDriverName,
+            driverWhatsApp: selectedDriverWhatsApp,
+            service: selectedService,
+            details: {}
         };
 
-        // Function to update the driver availability status
+        formData.forEach((value, key) => {
+            data.details[key] = value;
+        });
+
+        // Membangun pesan WhatsApp
+        const message = `
+            Pesanan Layanan: ${selectedService}
+            Driver: ${selectedDriverName}
+            No HP Driver: ${selectedDriverWhatsApp}
+            Alamat Penjemputan: ${data.details['pickupLocation']}
+            Alamat Tujuan: ${data.details['dropOffLocation']}
+            Pesan Tambahan: ${data.details['message'] || 'Tidak ada pesan tambahan'}
+        `;
+
+        // URL WhatsApp untuk mengirim pesan
+        const whatsappURL = `https://wa.me/${selectedDriverWhatsApp}?text=${encodeURIComponent(message)}`;
+
+        // Membuka WhatsApp dengan pesan yang sudah terisi
+        window.open(whatsappURL, '_blank');
+        
+        // Menutup formulir setelah mengirim
+        alert("Formulir telah dikirim ke WhatsApp Driver!");
+        closeFormModal();
+    }
+</script>
+
+
+    
+    <script>
+        const adminCredentials = {
+            username: "hasan",
+            password: "228866"
+        };
+
+        function toggleMenu() {
+            const menu = document.getElementById("side-menu");
+            menu.classList.toggle("open");
+        }
+
+        function attemptAdminLogin() {
+            document.getElementById("login-modal").style.display = "flex";
+        }
+
+        function closeLoginModal() {
+            document.getElementById("login-modal").style.display = "none";
+            clearLoginFields();
+        }
+
+        function validateLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                alert("Login berhasil!");
+                // Redirect to admin tools page
+                window.location.href = "admin-tools.html";
+            } else {
+                alert("Username atau password salah!");
+            }
+        }
+
+        function clearLoginFields() {
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+
         function toggleDriverStatus() {
             const driverSelect = document.getElementById("driver-select");
             const driverId = driverSelect.value;
-
-            // Toggle the availability status for the selected driver
             driverAvailability[driverId] = !driverAvailability[driverId];
-
-            // Save the updated availability status to localStorage
             localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
-
-            // Show an alert with the current status
-            //alert(Status driver ${driverId} telah diubah menjadi ${driverAvailability[driverId] ? 'Tersedia' : 'Tidak Tersedia'});
+            updateDriverStatus(driverId);
         }
-    </script>
 
+        function updateDriverStatus(driverId) {
+            const statusLabel = document.getElementById("status-label-" + driverId);
+            const orderButton = document.getElementById("order-" + driverId);
+
+            if (driverAvailability[driverId]) {
+                statusLabel.textContent = "Status: Tersedia";
+                orderButton.disabled = false;
+            } else {
+                statusLabel.textContent = "Status: Tidak Tersedia";
+                orderButton.disabled = true;
+            }
+        }
+
+        const driverAvailability = JSON.parse(localStorage.getItem("driverAvailability")) || { 1: true, 2: true };
+        updateDriverStatus(1);
+        updateDriverStatus(2);
+
+
+    </script>
 </body>
 </html>
