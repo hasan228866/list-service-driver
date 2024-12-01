@@ -47,3 +47,26 @@ function toggleDriverStatus(driverId) {
     });
 }
 
+console.log(`Updating driver ${driverId} status to: ${newStatus}`);
+await firebase.database().ref(`drivers/${driverId}`).set({
+    available: newStatus
+});
+console.log('Status successfully updated!');
+
+console.log("Driver ID:", driverId);
+console.log("Current status:", currentStatus);
+console.log("New status:", newStatus);
+
+try {
+    await firebase.database().ref(`drivers/${driverId}`).set({
+        available: newStatus
+    });
+
+    driverAvailability[driverId] = newStatus;
+    localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
+
+    alert(`Status driver ${driverId} telah diubah menjadi ${newStatus ? 'Tersedia' : 'Tidak Tersedia'}`);
+} catch (error) {
+    console.error("Error updating driver status:", error);
+    alert("Terjadi kesalahan saat mengubah status driver. Silakan coba lagi. Error: " + error.message);
+}
