@@ -26,7 +26,7 @@
     <title>Admin Tools</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body {
+        body {  
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -113,31 +113,19 @@
             "2": true
         };
 
-        // Function to update the driver availability status in Firebase
-        async function toggleDriverStatus() {
+        // Function to update the driver availability status
+        function toggleDriverStatus() {
             const driverSelect = document.getElementById("driver-select");
             const driverId = driverSelect.value;
 
             // Toggle the availability status for the selected driver
-            const currentStatus = driverAvailability[driverId];
-            const newStatus = !currentStatus;
+            driverAvailability[driverId] = !driverAvailability[driverId];
 
-            // Save the updated availability status to Firebase
-            try {
-                await firebase.database().ref(`drivers/${driverId}`).set({
-                    available: newStatus
-                });
+            // Save the updated availability status to localStorage
+            localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
 
-                // Update localStorage
-                driverAvailability[driverId] = newStatus;
-                localStorage.setItem("driverAvailability", JSON.stringify(driverAvailability));
-
-                // Show an alert with the current status
-                alert(`Status driver ${driverId} telah diubah menjadi ${newStatus ? 'Tersedia' : 'Tidak Tersedia'}`);
-            } catch (error) {
-                console.error("Error updating driver status:", error);
-                alert("Terjadi kesalahan saat mengubah status driver. Silakan coba lagi.");
-            }
+            // Show an alert with the current status
+           // alert(Status driver ${driverId} telah diubah menjadi ${driverAvailability[driverId] ? 'Tersedia' : 'Tidak Tersedia'});
         }
     </script>
 
